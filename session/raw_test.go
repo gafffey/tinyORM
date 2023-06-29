@@ -3,6 +3,7 @@ package session
 import (
 	"database/sql"
 	"fmt"
+	"github.com/gafffey/tinyorm/dialect"
 	_ "github.com/go-sql-driver/mysql"
 	"os"
 	"testing"
@@ -19,7 +20,8 @@ func TestMain(m *testing.M) {
 }
 
 func NewSession() *Session {
-	return New(TestDB)
+	d, _ := dialect.GetDialect("mysql")
+	return New(TestDB, d)
 }
 
 func TestSession_Exec(t *testing.T) {
@@ -34,8 +36,8 @@ func TestSession_Exec(t *testing.T) {
 const (
 	CreateTable = `
 CREATE TABLE IF NOT EXISTS User(
-   id INT UNSIGNED AUTO_INCREMENT,
-   name VARCHAR(100) NOT NULL,
+   Id INT UNSIGNED AUTO_INCREMENT,
+   Name VARCHAR(100) NOT NULL,
    PRIMARY KEY (id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 `
