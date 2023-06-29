@@ -14,6 +14,18 @@ func TestSession_Find(t *testing.T) {
 	}
 }
 
+func TestSession(t *testing.T) {
+	s := NewSession().Model(&User{})
+	users := make([]*User, 0)
+	if err := s.Where("Name like ?", "a%").Limit(2).OrderBy("Id DESC").Find(&users); err != nil || len(users) != 2 {
+		t.Fatal("failed to query all")
+	}
+
+	for _, u := range users {
+		t.Log(*u)
+	}
+}
+
 func TestSession_Limit(t *testing.T) {
 	s := NewSession().Model(&User{})
 	var users []*User
